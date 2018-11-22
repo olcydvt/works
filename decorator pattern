@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string>
+//#include <string>
+
+//Decorator pattern implementation
+class component{
+        std::string str = "null str";
+    public:
+        virtual void makeSmth() = 0;
+};
+
+class concreteComponentX : public component {
+        std::string str = "X str";
+    public:
+        virtual void makeSmth(){
+          std::cout<<"I am X"<<std::endl;
+        }
+};
+
+class concreteComponentY : public component {
+        std::string str = "Y str";
+    public:
+        virtual void makeSmth(){
+          std::cout<<"I am Y"<<std::endl;
+        }
+};
+
+class decorator : public component{
+  virtual void makeSmth()=0;
+};
+
+class decorateWithX : public decorator{
+    component *cmp;
+    public:
+    decorateWithX(component *other_cmp){
+      cmp = other_cmp;
+    }
+
+    void makeSmth(){
+      cmp->makeSmth();
+      std::cout<<"I am decoratorX"<<std::endl;
+    }
+};
+
+class decorateWithY : public decorator{
+    component *cmp;
+    public:
+    decorateWithY(component *other_cmp){
+      cmp = other_cmp;
+    }
+
+    void makeSmth(){
+      cmp->makeSmth();
+      std::cout<<"I am decoratorY"<<std::endl;
+    }
+};
+
+int main(int argc, char const *argv[])
+{
+    component *cmp_1 = new decorateWithY(new decorateWithX(new concreteComponentX()));
+    component *cmp_2 = new decorateWithY(new decorateWithX(new concreteComponentY()));
+
+    cmp_1->makeSmth();
+    cmp_2->makeSmth();
+
+    return 0;
+}
+
